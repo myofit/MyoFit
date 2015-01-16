@@ -1,16 +1,91 @@
 package com.bran.android;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 
 public class MyoFitActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		// Set Layout
+		// Layouts are in res/layout
+		//setContentView(R.layout.thelayoutname);
 		setContentView(R.layout.activity_myo_fit);
+		
+		// Use One Activity for each layout
+		// Essentially: HomeActivity, SelectWorkoutActivity, WorkoutActivity etc.
+		
+		// TextView and Button are subclasses of View
+		// Other examples: TextField, ImageView
+		
+		// Get TextView
+		//TextView tv = (TextView) this.findViewById(R.id.theid);
+		// Set Text
+		//tv.setText("Your Text");
+		
+		// Get Button
+		//Button b = (Button) this.findViewById(R.id.theid);
+		// Set Listener
+		/*b.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				// Method For Click
+				
+				// For now just create a comment describing what needs to be done
+				 * Ex. Store in DB, Start Another Activity
+				
+			}
+		});*/
+		
+		Button startApp = (Button)this.findViewById(R.id.startButton);
+		startApp.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+			  //workoutSelectActivity	
+			}
+		}
+		});
+		
+		final ListView exerciseSeq = (ListView) findViewById(R.id.exerciseList);
+		String[] values = new String[] {
+			"Bicep Curl", "Tricep experience", "Forearm scrim"	};
+		final ArrayList<String> list = new ArrayList<String>();
+		for (int i=0; i<values.length; i++)
+			list.add(values[i]);
+		
+		ArrayAdapter<TextView> mAdapter = new ArrayAdapter<TextView>(this, android.R.layout.simple_list_item_1, R.layout.list_element);
+		exerciseSeq.setAdapter(mAdapter);
+		
+		exerciseSeq.setOnItemClickListener(new AdapterView.OnItemClickListener() 
+		{
+
+			@Override
+			public void onItemClick(AdapterView<TextView> parent, final View view, int position, long id) 
+			{
+
+
+
+			}
+
+		});
+		
 	}
 
 	@Override
