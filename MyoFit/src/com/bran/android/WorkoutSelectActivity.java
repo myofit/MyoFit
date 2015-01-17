@@ -4,18 +4,24 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class WorkoutSelectActivity extends Activity {
 
+	ArrayList<String> exerciseSelections;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -58,29 +64,45 @@ public class WorkoutSelectActivity extends Activity {
 		for (int i=0; i<values.length; i++)
 			exerciseList.add(values[i]);
 		
-		ListView exerciseSeq = (ListView) findViewById(R.id.namelistview);
+		ListView exerciseSeq = (ListView) this.findViewById(R.id.namelistview);
+		//exerciseSeq.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		
         // specify an adapter (see also next example)
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.namelist);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1,exerciseList);
         exerciseSeq.setAdapter(adapter);
 		
-		ArrayAdapter<TextView> mAdapter = new ArrayAdapter<TextView>(this, android.R.layout.simple_list_item_1, R.layout.namelist);	
-		
 		// Exercises in Workout
-		ArrayList<String> exercises = new ArrayList<String>();
+		exerciseSelections = new ArrayList<String>();
 		
 		exerciseSeq.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				
-				// HIGHLIGHT AND ADD TO EXERCISES LIST
-				
+				if (((ListView)parent).isItemChecked(position))
+				{
+					view.setBackgroundColor(Color.WHITE);
+					exerciseSelections.remove(((TextView)view).getText());
+				} else {
+					view.setBackgroundColor(Color.CYAN);
+					exerciseSelections.add((String) ((TextView)view).getText());
+				}
+				((ListView)parent).setItemChecked(position,!((ListView)parent).isItemChecked(position));
+				//Log.i("excercise selections",exerciseSelections.get(exerciseSelections.size()-1));
 			}
 			
 		});
 		
-		TextView tv = (TextView) this.findViewById(R.id.tempView);
+		Button beginWorkoutButton = (Button) this.findViewById(R.id.beginbutton);
+		beginWorkoutButton.setText("Begin Workout");
+		beginWorkoutButton.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+			  //Intent intent = new Intent(WorkoutSelectActivity.this, ExerciseActivity.class);
+			  //startActivity(intent);
+			}
+		});
 
 		
 		
