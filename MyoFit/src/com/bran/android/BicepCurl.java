@@ -34,13 +34,4 @@ public class BicepCurl extends Exercise {
 		}
 
 	}
-
-}
-
-if(down && myo.getYaw() > minAngle) {
-	down = false;
-	reps++;
-}
-if(down = false && myo.getYaw() < downAngle) {
-	down = true;
 }
