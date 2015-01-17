@@ -74,20 +74,29 @@ public class WorkoutSelectActivity extends Activity {
 		// Exercises in Workout
 		exerciseSelections = new ArrayList<String>();
 		
+		exerciseSeq.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+		
+		for (int i = 0; i < exerciseSeq.getAdapter().getCount(); i++)
+			exerciseSeq.setItemChecked(i, true);
+		
 		exerciseSeq.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				if (((ListView)parent).isItemChecked(position))
+				
+				ListView lv = (ListView) parent;
+				
+				if (lv.isItemChecked(position))
 				{
-					view.setBackgroundColor(Color.WHITE);
-					exerciseSelections.remove(((TextView)view).getText());
+					view.setBackgroundColor(Color.TRANSPARENT);
+					exerciseSelections.remove((String) ((TextView)view).getText());
+					lv.setItemChecked(position, false);
 				} else {
 					view.setBackgroundColor(Color.CYAN);
 					exerciseSelections.add((String) ((TextView)view).getText());
+					lv.setItemChecked(position, true);
 				}
-				((ListView)parent).setItemChecked(position,!((ListView)parent).isItemChecked(position));
-				//Log.i("excercise selections",exerciseSelections.get(exerciseSelections.size()-1));
+				lv.setItemChecked(position,!lv.isItemChecked(position));
 			}
 			
 		});
@@ -99,8 +108,8 @@ public class WorkoutSelectActivity extends Activity {
 			@Override
 			public void onClick(View v)
 			{
-			  //Intent intent = new Intent(WorkoutSelectActivity.this, ExerciseActivity.class);
-			  //startActivity(intent);
+			  Intent intent = new Intent(WorkoutSelectActivity.this, ExerciseActivity.class);
+			  startActivity(intent);
 			}
 		});
 

@@ -7,19 +7,20 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.bran.android.WorkoutSelectActivity" >
-
-    <TextView
-        android:id="@+id/tempView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
-
     
     <ListView
-	    android:id="@+id/namelistview"
-	    android:scrollbars="vertical"
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-	/>
+        android:id="@+id/namelistview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/beginbutton"
+        android:scrollbars="vertical" />
+
+    <Button
+        android:id="@+id/beginbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="Button" />
     
 </RelativeLayout>
