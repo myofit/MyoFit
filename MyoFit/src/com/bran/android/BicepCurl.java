@@ -27,6 +27,7 @@ public class BicepCurl extends Exercise {
 				if(down && vector.z() > minAngle) {
 					down = false;
 					rep++;
+					myo.vibrate(VibrationType.SHORT);
 				} else if (!down && vector.z() < downAngle) {
 					down = true;
 				}
