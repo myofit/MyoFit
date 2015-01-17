@@ -3,6 +3,7 @@ package com.bran.android;
 import android.util.Log;
 
 import com.thalmic.myo.Myo;
+import com.thalmic.myo.Myo.VibrationType;
 import com.thalmic.myo.Quaternion;
 import com.thalmic.myo.Vector3;
 
@@ -24,11 +25,11 @@ public class BicepCurl extends Exercise {
 		if(type.equals(DataType.ORIENTATION)) {
 			Log.i("BicepCurl Angles","z: "+quaternion.z());
 			if(started) {
-				if(down && vector.z() > minAngle) {
+				if(down && quaternion.z() > minAngle) {
 					down = false;
 					rep++;
 					myo.vibrate(VibrationType.SHORT);
-				} else if (!down && vector.z() < downAngle) {
+				} else if (!down && quaternion.z() < downAngle) {
 					down = true;
 				}
 			}
