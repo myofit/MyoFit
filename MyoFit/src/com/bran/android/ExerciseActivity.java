@@ -8,18 +8,35 @@ import com.thalmic.myo.Hub.LockingPolicy;
 import com.thalmic.myo.scanner.ScanActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class ExerciseActivity extends Activity implements UIManager {
 	
+	private TextView myoTV;
+	
 	private TextView exercise_nameTV;
 	private TextView setTV;
 	private TextView repTV;
+	private TextView formTV;
+	
+	private TextView setValTV;
+	private TextView repValTV;
+	private TextView formValTV;
+	
+	private ArrayList<ExerciseType> workout;
+	
+	private Hub hub;
 	
 	private ExerciseManager manager;
 	
@@ -29,27 +46,17 @@ public class ExerciseActivity extends Activity implements UIManager {
 		
 		setContentView(R.layout.activity_exercise);
 		
-		Bundle b = getIntent().getExtras();
-		
-		ArrayList<ExerciseType> exercises = new ArrayList<ExerciseType>();
-		
-		for (int i = 0; i < b.getInt("Size"); i++)
-			exercises.add((ExerciseType) b.get("Exercise "+i));
-		
-		
-		// MOVE TO MIDDLE CONNECTION ACTIVITY
+		initUIElements();
 		
 		// Create Hub for Connection
-		Hub hub = Hub.getInstance();
+		hub = Hub.getInstance();
 
 		// Unlock Myo Permanently
 		hub.setLockingPolicy(LockingPolicy.NONE);
-
+				
 		// Terminate Usage Data Sending
 		hub.setSendUsageData(false);
-		
-		Log.i("MyoTestActivity", "not connected");
-		
+				
 		// Initialize Hub by Context
 		if (!hub.init(this,getPackageName())) {
 			// Hub Issue
@@ -59,16 +66,85 @@ public class ExerciseActivity extends Activity implements UIManager {
 		} else
 			Log.i("MyoTestActivity", "connected");
 		
-		Log.i("MyoTestActivity", "Myo Not Synced");
-		
-		// Myo SDK Activity for Connecting (called on Begin Workout Click) 
+		// Myo SDK Activity for Connecting 
 		Intent intent = new Intent(this,ScanActivity.class);
 		startActivity(intent);
-		
+				
 		hub.setLockingPolicy(LockingPolicy.NONE);
 		Log.i("MyoTestActivity", "MyoTestActivity - "+hub.getLockingPolicy());
+				
+		myoTV.setText("Myo Connected!");
+		// FADE OUT
 		
-		manager = new ExerciseManager(this, new ExerciseType[]{ExerciseType.BICEP_CURL,ExerciseType.BENCH_PRESS,ExerciseType.TRICEP_PUSHDOWN});
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle("Sync Myo");
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+           public void onClick(DialogInterface dialog, int whichButton) {
+
+            	continueApp();
+
+            }
+        });
+        
+        alert.show();
+				
+	}
+	
+	public void initUIElements() {
+		
+		myoTV = (TextView) this.findViewById(R.id.myoTextView);
+
+		exercise_nameTV = (TextView) this.findViewById(R.id.exercise_name);
+		setTV = (TextView) this.findViewById(R.id.set);
+		repTV = (TextView) this.findViewById(R.id.rep);
+		formTV = (TextView) this.findViewById(R.id.form);
+		
+		setValTV = (TextView) this.findViewById(R.id.set_title);
+		repValTV = (TextView) this.findViewById(R.id.rep_title);
+		formValTV = (TextView) this.findViewById(R.id.form_title);
+		
+		exercise_nameTV.setVisibility(View.INVISIBLE);
+		setTV.setVisibility(View.INVISIBLE);
+		repTV.setVisibility(View.INVISIBLE);
+		formTV.setVisibility(View.INVISIBLE);
+		setValTV.setVisibility(View.INVISIBLE);
+		repValTV.setVisibility(View.INVISIBLE);
+		formValTV.setVisibility(View.INVISIBLE);
+		
+	}
+	
+	public void switchUIElements() {
+		
+		myoTV.setVisibility(View.INVISIBLE);
+		
+		exercise_nameTV.setVisibility(View.VISIBLE);
+		setTV.setVisibility(View.VISIBLE);
+		repTV.setVisibility(View.VISIBLE);
+		formTV.setVisibility(View.VISIBLE);
+		setValTV.setVisibility(View.VISIBLE);
+		repValTV.setVisibility(View.VISIBLE);
+		formValTV.setVisibility(View.VISIBLE);
+		
+	}
+	
+	public void continueApp() {
+		
+		switchUIElements();
+		
+		ArrayList<ExerciseType> workout = (ArrayList<ExerciseType>) getIntent().getExtras().get("Workout");
+		
+		ExerciseType[] workout_array = new ExerciseType[workout.size()];
+		
+		int i = 0;
+		
+		for (ExerciseType type : workout) {
+			workout_array[i] = type;
+			i++;
+		}
+		
+		manager = new ExerciseManager(this, workout_array);
 		
 		// Create Device Listener
 		DeviceListener listener = new MyDeviceListener(manager);
@@ -76,12 +152,7 @@ public class ExerciseActivity extends Activity implements UIManager {
 		// Add Listener to Hub
 		hub.addListener(listener);
 		
-		exercise_nameTV = (TextView) this.findViewById(R.id.exercise_name);
-		
-		setTV = (TextView) this.findViewById(R.id.set);
-		
-		repTV = (TextView) this.findViewById(R.id.rep);
-		
+		// Update First Time to Fill UI Elements
 		update();
 		
 	}
@@ -108,9 +179,23 @@ public class ExerciseActivity extends Activity implements UIManager {
 	@Override
 	public void update() {
 		
-		exercise_nameTV.setText(manager.exercise_name);
-		setTV.setText(manager.set);
-		repTV.setText(manager.rep);
+		if (exercise_nameTV != null && manager != null) {
+		
+			exercise_nameTV.setText(manager.exercise_name);
+
+			setTV.setText(""+manager.getSet());
+			repTV.setText(""+manager.getRep());
+
+		}
 		
 	}
+	
+	@Override
+	public void end() {
+		
+		Intent intent = new Intent(this,WorkoutCompleteActivity.class);
+		startActivity(intent);
+		
+	}
+	
 }

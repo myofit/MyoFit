@@ -117,9 +117,10 @@ public class WorkoutSelectActivity extends Activity {
 					Intent intent = new Intent(WorkoutSelectActivity.this, ExerciseActivity.class);
 
 					int size = 0;
-
+					
 					for (ExerciseType type : exerciseSelections) {
 						intent.putExtra("Exercise "+size, type);
+						intent.putExtra("Workout", exerciseSelections);
 						size++;
 					}
 

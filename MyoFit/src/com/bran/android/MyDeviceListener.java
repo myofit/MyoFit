@@ -13,10 +13,7 @@ public class MyDeviceListener extends AbstractDeviceListener {
 
 	private ExerciseManager manager;
 	
-	private Pose curPose;
 	private long timestampDiff;
-	
-	private static final int TIME_DIFF = 2000;
 	
 	public MyDeviceListener(ExerciseManager manager) {
 		this.manager = manager;
@@ -38,32 +35,26 @@ public class MyDeviceListener extends AbstractDeviceListener {
 		
 		Log.i("MyDeviceListener","MyDeviceListener - "+pose.toString());
 		
-		if (pose.equals(Pose.DOUBLE_TAP)) {
-
-			if (timestamp - timestampDiff > TIME_DIFF) {
-				curPose = pose;
-				timestampDiff = timestamp;
-				manager.next();
-			}
-			
-		} else if (pose.equals(Pose.FIST)) {
-			manager.nextSet();
-		} else if (pose.equals(Pose.FINGERS_SPREAD)) {
-			manager.endSet();
-		}
+		manager.processData(myo, timestamp, timestampDiff, pose, DataType.POSE);
+		timestampDiff = timestamp;
+		
+		manager.update();
 		
 	}
 	
 	@Override
 	public void onAccelerometerData(Myo myo, long timestamp, Vector3 accel) {
-		
+		manager.processData(myo,timestamp,accel,DataType.ACCELEROMETER);
+	}
+	
+	@Override
+	public void onGyroscopeData(Myo myo, long timestamp, Vector3 gyro) {
+		manager.processData(myo,timestamp,gyro,DataType.GYROSCOPE);
 	}
 	
 	@Override
 	public void onArmSync(Myo myo, long timestamp, Arm arm, XDirection xDirection) {
 		Log.i("MyoTestActivity", "Myo Synced");
-		//change image to myo synced
-		//add button for Continue
 	}
 	
 }

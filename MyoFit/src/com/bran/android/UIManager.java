@@ -4,4 +4,6 @@ public interface UIManager {
 
 	public void update();
 	
+	public void end();
+	
 }

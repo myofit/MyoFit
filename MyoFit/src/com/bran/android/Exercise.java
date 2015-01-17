@@ -1,11 +1,14 @@
 package com.bran.android;
 
+import com.thalmic.myo.Myo;
+import com.thalmic.myo.Vector3;
+
 import android.util.Log;
 
 public class Exercise {
 	
-	private int set;
-	private int rep;
+	protected int set;
+	protected int rep;
 	private boolean started;
 	
 	private String name;
@@ -57,6 +60,10 @@ public class Exercise {
 	
 	public boolean isStarted() {
 		return started;
+	}
+	
+	public void processData(Myo myo, long timestamp, Vector3 vector, DataType type) {
+		
 	}
 	
 }

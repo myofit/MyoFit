@@ -2,6 +2,12 @@ package com.bran.android;
 
 import java.util.ArrayList;
 
+import com.thalmic.myo.Myo;
+import com.thalmic.myo.Pose;
+import com.thalmic.myo.Vector3;
+
+import android.content.Intent;
+import android.sax.StartElementListener;
 import android.util.Log;
 
 public class ExerciseManager {
@@ -14,8 +20,10 @@ public class ExerciseManager {
 	
 	public ExerciseType exercise_type;
 	public String exercise_name;
-	public String set;
-	public String rep;
+	
+	private Pose curPose;
+	
+	private static final int TIME_DIFF = 2000;
 	
 	public ExerciseManager(UIManager uimanager, ExerciseType[] types) {
 		
@@ -27,10 +35,15 @@ public class ExerciseManager {
 		for (int i = 0; i < types.length; i++) {
 			switch(types[i]) {
 				case BICEP_CURL: exercises.add(new BicepCurl()); 
+				break;
 				case BENCH_PRESS: exercises.add(new BenchPress());
+				break;
 				case TRICEP_PUSHDOWN: exercises.add(new TricepPushdown());
+				break;
 			}
 		}
+		
+		update();
 		
 	}
 	
@@ -40,12 +53,11 @@ public class ExerciseManager {
 
 			if (position+1 >= exercises.size()) {
 
-				// WORKOUT COMPLETE
+				uimanager.end();
 
 			} else {
 				position++;
 				this.update();
-				uimanager.update();
 				Log.i("ExerciseManager", "Exercise Manager - next()");
 			}
 
@@ -55,7 +67,6 @@ public class ExerciseManager {
 	
 	public void nextSet() {
 		exercises.get(position).nextSet();
-		
 	}
 	
 	public void endSet() {
@@ -63,12 +74,46 @@ public class ExerciseManager {
 		
 	}
 	
+	public int getSet() {
+		return exercises.get(position).getSet();
+	}
+	
+	public int getRep() {
+		return exercises.get(position).getRep();
+	}
+	
+	public void processData(Myo myo, long timestamp, Vector3 vector, DataType type) {
+		exercises.get(position).processData(myo, timestamp, vector, type);
+		this.update();
+	}
+	
+	public void processData(Myo myo, long timestamp, long timestampDiff, Pose pose, DataType type) {
+		
+		if (pose.equals(Pose.DOUBLE_TAP)) {
+
+			if (timestamp - timestampDiff > TIME_DIFF) {
+				curPose = pose;
+				timestampDiff = timestamp;
+				next();
+			}
+			
+		} else if (pose.equals(Pose.FIST)) {
+			nextSet();
+		} else if (pose.equals(Pose.FINGERS_SPREAD)) {
+			endSet();
+		}
+		
+		this.update();
+		
+	}
+	
 	public void update() {
 		
 		exercise_type = exercises.get(position).getType();
 		exercise_name = exercises.get(position).getName();
-		rep = ""+exercises.get(position).getRep();
-		set = ""+exercises.get(position).getSet();
+		
+		if (uimanager != null)
+			uimanager.update();
 		
 	}
 	
@@ -83,5 +128,5 @@ public class ExerciseManager {
 		return null;
 		
 	}
-
+	
 }
