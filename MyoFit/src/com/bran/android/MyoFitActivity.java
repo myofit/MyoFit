@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -60,30 +61,24 @@ public class MyoFitActivity extends Activity {
 			{
 			  //workoutSelectActivity	
 			}
-		}
 		});
 		
-		final ListView exerciseSeq = (ListView) findViewById(R.id.exerciseList);
+		ListView exerciseSeq = (ListView) findViewById(R.id.exerciseList);
 		String[] values = new String[] {
 			"Bicep Curl", "Tricep experience", "Forearm scrim"	};
-		final ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<String>();
 		for (int i=0; i<values.length; i++)
 			list.add(values[i]);
 		
 		ArrayAdapter<TextView> mAdapter = new ArrayAdapter<TextView>(this, android.R.layout.simple_list_item_1, R.layout.list_element);
-		exerciseSeq.setAdapter(mAdapter);
+		exerciseSeq.setAdapter(mAdapter);	
 		
-		exerciseSeq.setOnItemClickListener(new AdapterView.OnItemClickListener() 
-		{
+		exerciseSeq.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<TextView> parent, final View view, int position, long id) 
-			{
-
-
-
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				
 			}
-
 		});
 		
 	}
