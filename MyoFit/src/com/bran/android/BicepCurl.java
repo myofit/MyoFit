@@ -19,9 +19,10 @@ public class BicepCurl extends Exercise {
 	@Override
 	public void processData(Myo myo, long timestamp, Quaternion quaternion, DataType type) {
 
+
 		// Process Data
-		/*if(type.equals(DataType.GYROSCOPE)) {
-			Log.i("BicepCurl Gyroscope","z: "+vector.z());
+		if(type.equals(DataType.ORIENTATION)) {
+			Log.i("BicepCurl Angles","z: "+quaternion.z());
 			if(started) {
 				if(down && vector.z() > minAngle) {
 					down = false;
@@ -30,10 +31,27 @@ public class BicepCurl extends Exercise {
 					down = true;
 				}
 			}
-		}*/
-		
+		}
+
 	}
-	
-	
-	
+
+	@Override
+	public void processData(Myo myo, long timestamp, Vector3 vector, DataType type) {
+
+
+		// Process Data
+		/*if(type.equals(DataType.GYROSCOPE)) {
+		Log.i("BicepCurl Gyroscope","z: "+vector.z());
+		if(started) {
+		if(down && vector.z() > minAngle) {
+		down = false;
+		rep++;
+	} else if (!down && vector.z() < downAngle) {
+	down = true;
+}]
+}
+}*/
+
+}
+
 }
