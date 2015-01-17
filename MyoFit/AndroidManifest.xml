@@ -36,7 +36,11 @@
         </activity>
         <activity
             android:name=".WorkoutCompleteActivity"
-            android:label="@string/title_activity_workout_complete" >
+            android:label="@string/app_name" > 
+        </activity>
+        <activity
+            android:name=".WorkoutListActivity"
+            android:label="@string/app_name" > 
         </activity>
     </application>
 

@@ -42,6 +42,17 @@ public class MyoFitActivity extends Activity {
 			}
 		});
 		
+		Button summaryApp = (Button) this.findViewById(R.id.summaryButton);
+		
+		summaryApp.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				Intent intent = new Intent(MyoFitActivity.this, WorkoutListActivity.class);
+				startActivity(intent);
+			}
+		});
 	}
 
 	@Override

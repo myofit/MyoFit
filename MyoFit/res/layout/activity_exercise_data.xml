@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#BBDEFB"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/exercise_name"
+        android:layout_width="320dp"
+        android:layout_height="120dp"
+        android:background="#1565C0"
+        android:paddingLeft="20dp"
+        android:paddingTop="45dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#FFFFFF"
+        android:textSize="42sp" />
+    
+    <ListView
+        android:id="@+id/exerciseDataView"
+        android:layout_width="match_parent"
+        android:layout_height="288dp"
+        android:layout_above="@+id/beginbutton"
+        android:scrollbars="vertical" />
+    
+    <Button
+        android:id="@+id/homebutton"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_weight="0.18"
+        android:background="#64B5F6"
+        android:text="Home" />
+    
+
+    <!--
+    <TextView
+        android:id="@+id/set_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="70dp"
+        android:paddingLeft="44dp"
+        android:text="Set:"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000000"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/rep_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/set_title"
+        android:layout_marginTop="51dp"
+        android:layout_toRightOf="@+id/set_title"
+        android:paddingLeft="44dp"
+        android:text="Reps:"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000000"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/form_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/rep_title"
+        android:paddingLeft="44dp"
+        android:paddingTop="50dp"
+        android:text="Form:"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000000"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/set"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/set_title"
+        android:layout_centerHorizontal="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/rep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/form_title"
+        android:layout_alignStart="@+id/set"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/form"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/form_title"
+        android:layout_centerHorizontal="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="30sp" />
+    -->
+
+</LinearLayout>

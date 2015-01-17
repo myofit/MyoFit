@@ -95,7 +95,7 @@ public class WorkoutSelectActivity extends Activity {
 					exerciseSelections.remove(exerciseList.get(position));
 					lv.setItemChecked(position, false);
 				} else {
-					view.setBackgroundColor(Color.CYAN);
+					view.setBackgroundColor(Color.parseColor("#64B5F6"));
 					exerciseSelections.add(exerciseList.get(position));
 					lv.setItemChecked(position, true);
 				}
