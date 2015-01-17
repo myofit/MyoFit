@@ -1,6 +1,7 @@
 package com.bran.android;
 
 import com.thalmic.myo.Myo;
+import com.thalmic.myo.Quaternion;
 import com.thalmic.myo.Vector3;
 
 import android.util.Log;
@@ -9,7 +10,7 @@ public class Exercise {
 	
 	protected int set;
 	protected int rep;
-	private boolean started;
+	protected boolean started;
 	
 	private String name;
 	
@@ -63,6 +64,10 @@ public class Exercise {
 	}
 	
 	public void processData(Myo myo, long timestamp, Vector3 vector, DataType type) {
+		
+	}
+	
+	public void processData(Myo myo, long timestamp, Quaternion quaternion, DataType type) {
 		
 	}
 	

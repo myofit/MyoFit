@@ -6,6 +6,7 @@ import com.thalmic.myo.AbstractDeviceListener;
 import com.thalmic.myo.Arm;
 import com.thalmic.myo.Myo;
 import com.thalmic.myo.Pose;
+import com.thalmic.myo.Quaternion;
 import com.thalmic.myo.Vector3;
 import com.thalmic.myo.XDirection;
 
@@ -50,6 +51,11 @@ public class MyDeviceListener extends AbstractDeviceListener {
 	@Override
 	public void onGyroscopeData(Myo myo, long timestamp, Vector3 gyro) {
 		manager.processData(myo,timestamp,gyro,DataType.GYROSCOPE);
+	}
+	
+	@Override
+	public void onOrientationData(Myo myo, long timestamp, Quaternion rotation) {
+		manager.processData(myo, timestamp, rotation, DataType.ORIENTATION);
 	}
 	
 	@Override

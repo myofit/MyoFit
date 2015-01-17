@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.thalmic.myo.Myo;
 import com.thalmic.myo.Pose;
+import com.thalmic.myo.Quaternion;
 import com.thalmic.myo.Vector3;
 
 import android.content.Intent;
@@ -21,7 +22,7 @@ public class ExerciseManager {
 	public ExerciseType exercise_type;
 	public String exercise_name;
 	
-	private Pose curPose;
+	private Pose prevPose;
 	
 	private static final int TIME_DIFF = 2000;
 	
@@ -87,21 +88,29 @@ public class ExerciseManager {
 		this.update();
 	}
 	
+	public void processData(Myo myo, long timestamp, Quaternion quaternion, DataType type) {
+		exercises.get(position).processData(myo, timestamp, quaternion, type);
+		this.update();
+	}
+	
 	public void processData(Myo myo, long timestamp, long timestampDiff, Pose pose, DataType type) {
 		
 		if (pose.equals(Pose.DOUBLE_TAP)) {
-
-			if (timestamp - timestampDiff > TIME_DIFF) {
-				curPose = pose;
-				timestampDiff = timestamp;
+			
+			if (prevPose != null && !pose.equals(prevPose))
 				next();
-			}
+			else if (timestamp - timestampDiff > TIME_DIFF && prevPose != null && pose.equals(prevPose))
+				next();
+		
+			timestampDiff = timestamp;
 			
 		} else if (pose.equals(Pose.FIST)) {
 			nextSet();
 		} else if (pose.equals(Pose.FINGERS_SPREAD)) {
 			endSet();
 		}
+		
+		prevPose = pose;
 		
 		this.update();
 		
