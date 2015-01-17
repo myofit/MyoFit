@@ -1,5 +1,7 @@
 package com.bran.android;
 
+import java.util.ArrayList;
+
 import com.thalmic.myo.DeviceListener;
 import com.thalmic.myo.Hub;
 import com.thalmic.myo.Hub.LockingPolicy;
@@ -26,6 +28,14 @@ public class ExerciseActivity extends Activity implements UIManager {
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_exercise);
+		
+		Bundle b = getIntent().getExtras();
+		
+		ArrayList<ExerciseType> exercises = new ArrayList<ExerciseType>();
+		
+		for (int i = 0; i < b.getInt("Size"); i++)
+			exercises.add((ExerciseType) b.get("Exercise "+i));
+		
 		
 		// MOVE TO MIDDLE CONNECTION ACTIVITY
 		

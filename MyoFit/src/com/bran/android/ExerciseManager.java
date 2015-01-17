@@ -71,5 +71,17 @@ public class ExerciseManager {
 		set = ""+exercises.get(position).getSet();
 		
 	}
+	
+	public static String getName(ExerciseType type) {
+		
+		switch(type) {
+			case BICEP_CURL: return "Bicep Curl";
+			case BENCH_PRESS: return "Bench Press";
+			case TRICEP_PUSHDOWN: return "Tricep Pushdown";
+		}
+		
+		return null;
+		
+	}
 
 }

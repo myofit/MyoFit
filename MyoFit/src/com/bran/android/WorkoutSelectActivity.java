@@ -16,11 +16,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class WorkoutSelectActivity extends Activity {
 
-	ArrayList<String> exerciseSelections;
+	ArrayList<ExerciseType> exerciseSelections;
+	ArrayList<ExerciseType> exerciseList;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,21 +60,22 @@ public class WorkoutSelectActivity extends Activity {
 			}
 		});*/
 		
-		String[] values = new String[] {
-			"Bicep Curl", "Tricep experience", "Forearm scrim"	};
-		ArrayList<String> exerciseList = new ArrayList<String>();
-		for (int i=0; i<values.length; i++)
-			exerciseList.add(values[i]);
+		exerciseList = new ArrayList<ExerciseType>();
+		exerciseList.add(ExerciseType.BICEP_CURL);
+		exerciseList.add(ExerciseType.BENCH_PRESS);
+		exerciseList.add(ExerciseType.TRICEP_PUSHDOWN);
+		ArrayList<String> exerciseListNames = new ArrayList<String>();
+		for (ExerciseType exercise : exerciseList)
+			exerciseListNames.add(ExerciseManager.getName(exercise));
 		
 		ListView exerciseSeq = (ListView) this.findViewById(R.id.namelistview);
-		//exerciseSeq.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		
         // specify an adapter (see also next example)
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1,exerciseList);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1,exerciseListNames);
         exerciseSeq.setAdapter(adapter);
 		
 		// Exercises in Workout
-		exerciseSelections = new ArrayList<String>();
+		exerciseSelections = new ArrayList<ExerciseType>();
 		
 		exerciseSeq.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		
@@ -89,11 +92,11 @@ public class WorkoutSelectActivity extends Activity {
 				if (lv.isItemChecked(position))
 				{
 					view.setBackgroundColor(Color.TRANSPARENT);
-					exerciseSelections.remove((String) ((TextView)view).getText());
+					exerciseSelections.remove(exerciseList.get(position));
 					lv.setItemChecked(position, false);
 				} else {
 					view.setBackgroundColor(Color.CYAN);
-					exerciseSelections.add((String) ((TextView)view).getText());
+					exerciseSelections.add(exerciseList.get(position));
 					lv.setItemChecked(position, true);
 				}
 				lv.setItemChecked(position,!lv.isItemChecked(position));
@@ -108,8 +111,27 @@ public class WorkoutSelectActivity extends Activity {
 			@Override
 			public void onClick(View v)
 			{
-			  Intent intent = new Intent(WorkoutSelectActivity.this, ExerciseActivity.class);
-			  startActivity(intent);
+
+				if (exerciseSelections.size() > 0) {
+
+					Intent intent = new Intent(WorkoutSelectActivity.this, ExerciseActivity.class);
+
+					int size = 0;
+
+					for (ExerciseType type : exerciseSelections) {
+						intent.putExtra("Exercise "+size, type);
+						size++;
+					}
+
+					intent.putExtra("Size",size);
+
+					startActivity(intent);
+
+				} else {
+					Toast.makeText(WorkoutSelectActivity.this, "Must Selected At Least One Exercise", Toast.LENGTH_SHORT).show();
+				}
+				
+				
 			}
 		});
 
