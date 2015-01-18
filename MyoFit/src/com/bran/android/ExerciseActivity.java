@@ -66,7 +66,7 @@ public class ExerciseActivity extends Activity implements UIManager {
 		} else
 			Log.i("MyoTestActivity", "connected");
 
-		// Myo SDK Activity for Connecting
+		// Myo SDK Activity for Connecting 
 		Intent intent = new Intent(this,ScanActivity.class);
 		startActivity(intent);
 
@@ -78,17 +78,17 @@ public class ExerciseActivity extends Activity implements UIManager {
 
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-        alert.setTitle("Sync Myo");
+		alert.setTitle("Sync Myo");
 
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-           public void onClick(DialogInterface dialog, int whichButton) {
+		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
 
-            	continueApp();
+				continueApp();
 
-            }
-        });
+			}
+		});
 
-        alert.show();
+		alert.show();
 
 	}
 
@@ -185,6 +185,11 @@ public class ExerciseActivity extends Activity implements UIManager {
 
 			setTV.setText(""+manager.getSet());
 			repTV.setText(""+manager.getRep());
+			if (manager.getForm()) {
+				formTV.setText("Good");
+			} else {
+				formTV.setText("Bad");
+			}
 
 		}
 
