@@ -38,6 +38,7 @@ public class Exercise {
 		Log.i("Exercises", "Exercises - nextSet()");
 		if(!started) {
 			set++;
+			rep = 0; // TODO: STORE IN DB FIRST
 			started = true;
 			Log.i("Exercises", "Exercises - nextSet() - setTV: "+set);
 		}

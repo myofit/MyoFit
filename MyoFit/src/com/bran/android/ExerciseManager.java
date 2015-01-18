@@ -72,7 +72,6 @@ public class ExerciseManager {
 	
 	public void endSet() {
 		exercises.get(position).endSet();
-		
 	}
 	
 	public int getSet() {
@@ -95,7 +94,10 @@ public class ExerciseManager {
 	
 	public void processData(Myo myo, long timestamp, long timestampDiff, Pose pose, DataType type) {
 		
-		if (pose.equals(Pose.DOUBLE_TAP)) {
+		Log.i("ExerciseManager","ExerciseManager - Pose: "+pose);
+		
+		// Next Exercise
+		if (pose.equals(Pose.WAVE_OUT)) {
 			
 			if (prevPose != null && !pose.equals(prevPose))
 				next();
