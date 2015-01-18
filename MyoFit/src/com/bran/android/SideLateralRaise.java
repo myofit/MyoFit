@@ -72,4 +72,3 @@ public class SideLateralRaise extends Exercise {
 	}
 
 }
->>>>>>> origin/master
