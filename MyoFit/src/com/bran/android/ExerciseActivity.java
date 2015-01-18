@@ -43,6 +43,8 @@ public class ExerciseActivity extends Activity implements UIManager {
 	private Hub hub;
 
 	private ExerciseManager manager;
+	
+	private DeviceListener listener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -151,7 +153,7 @@ public class ExerciseActivity extends Activity implements UIManager {
 		manager = new ExerciseManager(this, workout_array);
 
 		// Create Device Listener
-		DeviceListener listener = new MyDeviceListener(manager);
+		listener = new MyDeviceListener(manager);
 
 		// Add Listener to Hub
 		hub.addListener(listener);
@@ -161,6 +163,15 @@ public class ExerciseActivity extends Activity implements UIManager {
 
 	}
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		Hub.getInstance().removeListener(listener);
+		if (isFinishing())
+			Hub.getInstance().shutdown();
+		
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

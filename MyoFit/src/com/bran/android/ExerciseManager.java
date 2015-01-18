@@ -124,7 +124,7 @@ public class ExerciseManager {
 	
 	private boolean similar_wave(Pose pose1, Pose pose2) {
 		
-		if (pose1.equals(pose1))
+		if (pose1.equals(pose2))
 			return true;
 		
 		if (pose1.equals(Pose.WAVE_IN) || pose1.equals(Pose.WAVE_OUT))
