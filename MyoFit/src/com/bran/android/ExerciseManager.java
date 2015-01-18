@@ -82,6 +82,10 @@ public class ExerciseManager {
 		return exercises.get(position).getRep();
 	}
 	
+	public boolean getForm() {
+		return exercises.get(position).getForm();
+	}
+	
 	public void processData(Myo myo, long timestamp, Vector3 vector, DataType type) {
 		exercises.get(position).processData(myo, timestamp, vector, type);
 		this.update();

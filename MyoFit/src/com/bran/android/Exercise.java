@@ -10,6 +10,7 @@ public class Exercise {
 	
 	protected int set;
 	protected int rep;
+	protected boolean form;
 	protected boolean started;
 	
 	private String name;
@@ -58,6 +59,10 @@ public class Exercise {
 	
 	public int getSet() {
 		return this.set;
+	}
+	
+	public boolean getForm() {
+		return this.form;
 	}
 	
 	public boolean isStarted() {

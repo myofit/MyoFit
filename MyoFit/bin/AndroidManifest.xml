@@ -18,7 +18,9 @@
         </activity>
         <activity android:label="@string/title_activity_exercise" android:name="com.bran.android.ExerciseActivity">
         </activity>
-        <activity android:label="@string/title_activity_workout_complete" android:name="com.bran.android.WorkoutCompleteActivity">
+        <activity android:label="@string/app_name" android:name="com.bran.android.WorkoutCompleteActivity"> 
+        </activity>
+        <activity android:label="@string/app_name" android:name="com.bran.android.WorkoutListActivity"> 
         </activity>
 
         <activity android:label="@string/myosdk__title_activity_scan" android:name="com.thalmic.myo.scanner.ScanActivity" android:theme="@style/myosdk__ScanActivityTheme"/>

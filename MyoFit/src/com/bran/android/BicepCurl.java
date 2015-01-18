@@ -11,15 +11,23 @@ import com.thalmic.myo.XDirection;
 public class BicepCurl extends Exercise {
 
 	private boolean down = true;
-	private double minAngle = 25;
-	private double downAngle = -10;
+	private float minAngle = 25;
+	private float downAngle = -10;
+	
+	//TODO: SENSITIVITY SLIDER
+	private float formThreshold = 40;
 
+	//TODO: ALLOW MULTIPLE WEARING ORIENTATION
 	private int direction;
+	
+	private long formTimeDiff;
+	private static final int TIME_DIFF = 2000;
 
 	public BicepCurl() {
 		super("Bicep Curl",ExerciseType.BICEP_CURL);
 
 		direction = 1;
+		form = true;
 
 	}
 
@@ -35,14 +43,16 @@ public class BicepCurl extends Exercise {
 			float roll = (float) Math.toDegrees(Quaternion.roll(quaternion));
 			float yaw = (float) Math.toDegrees(Quaternion.yaw(quaternion));
 
-			Log.i("BicepCurl", "pitch: "+pitch);
-			Log.i("BicepCurl", "roll: "+roll);
-			Log.i("BicepCurl", "yaw: "+yaw);
+			//Log.i("BicepCurl", "pitch: "+pitch);
+			//Log.i("BicepCurl", "roll: "+roll);
+			//Log.i("BicepCurl", "yaw: "+yaw);
 
 			if(started) {
 				if(down && pitch > minAngle) {
 					down = false;
 					rep++;
+					if (!form)
+						form = true;
 					// TODO: MAKE OPTION
 					// myo.vibrate(VibrationType.SHORT);
 				} else if (!down && pitch < downAngle) {
@@ -57,17 +67,23 @@ public class BicepCurl extends Exercise {
 	public void processData(Myo myo, long timestamp, Vector3 vector, DataType type) {
 
 		if(type.equals(DataType.GYROSCOPE)) {
-			Log.i("BicepCurl", "x: "+vector.x());
-			Log.i("BicepCurl", "y: "+vector.y());
-			Log.i("BicepCurl","z: "+vector.z());
-			/*if(started) {
-				if(down && vector.z() > minAngle) {
-					down = false;
-					rep++;
-				} else if (!down && vector.z() < downAngle) {
-					down = true;
+			
+			if (timestamp - formTimeDiff > TIME_DIFF) {
+
+				//Log.i("BicepCurl", "Gyro x: "+vector.x());
+				//Log.i("BicepCurl", "Gyro y: "+vector.y());
+				//Log.i("BicepCurl","Gyro z: "+vector.z());
+			
+				if(started) {
+					if (vector.x() > formThreshold) {
+						myo.vibrate(VibrationType.SHORT);
+						formTimeDiff = timestamp;
+						form = false;
+					}
 				}
-			}*/
+			
+			}
+			
 		}
 
 	}
