@@ -3,11 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#BBDEFB"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/exercise_name"
-        android:layout_width="320dp"
+        android:layout_width="match_parent"
         android:layout_height="120dp"
         android:background="#1565C0"
         android:paddingLeft="20dp"
@@ -21,7 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="288dp"
         android:layout_above="@+id/beginbutton"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"
+         />
     
     <Button
         android:id="@+id/homebutton"

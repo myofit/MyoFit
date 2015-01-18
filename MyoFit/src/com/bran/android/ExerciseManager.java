@@ -15,6 +15,8 @@ public class ExerciseManager {
 	
 	private ArrayList<Exercise> exercises;
 	
+	private ArrayList<ExerciseData> exerciseData;
+	
 	private int position;
 	
 	private UIManager uimanager;
@@ -41,8 +43,11 @@ public class ExerciseManager {
 				break;
 				case TRICEP_PUSHDOWN: exercises.add(new TricepPushdown());
 				break;
+				case SIDE_LATERAL_RAISE: exercises.add(new SideLateralRaise());
 			}
 		}
+		
+		exerciseData = new ArrayList<ExerciseData>();
 		
 		update();
 		
@@ -53,11 +58,18 @@ public class ExerciseManager {
 		if (!exercises.get(position).isStarted()) {
 
 			if (position+1 >= exercises.size()) {
-
+				
+				createExerciseData();
+				
+				// Workout Completed
 				uimanager.end();
 
 			} else {
+				
+				createExerciseData();
+				
 				position++;
+				
 				this.update();
 				Log.i("ExerciseManager", "Exercise Manager - next()");
 			}
@@ -86,6 +98,20 @@ public class ExerciseManager {
 		return exercises.get(position).getForm();
 	}
 	
+	public ArrayList<ExerciseData> getExerciseData() {
+		return exerciseData;
+	}
+	
+	public void createExerciseData() {
+		
+		Exercise exercise = exercises.get(position);
+		
+		ExerciseData data = new ExerciseData(exercise.getName(),exercise.getTime(),exercise.getSet_Reps(),position);
+		
+		exerciseData.add(data);
+		
+	}
+	
 	public void processData(Myo myo, long timestamp, Vector3 vector, DataType type) {
 		exercises.get(position).processData(myo, timestamp, vector, type);
 		this.update();
@@ -96,20 +122,34 @@ public class ExerciseManager {
 		this.update();
 	}
 	
+	private boolean similar_wave(Pose pose1, Pose pose2) {
+		
+		if (pose1.equals(pose1))
+			return true;
+		
+		if (pose1.equals(Pose.WAVE_IN) || pose1.equals(Pose.WAVE_OUT))
+			if (pose2.equals(Pose.WAVE_IN) || pose2.equals(Pose.WAVE_OUT))
+				return true;
+		
+		return false;
+		
+	}
+	
 	public void processData(Myo myo, long timestamp, long timestampDiff, Pose pose, DataType type) {
 		
 		Log.i("ExerciseManager","ExerciseManager - Pose: "+pose);
 		
-		// Next Exercise
-		if (pose.equals(Pose.WAVE_OUT)) {
+		if (pose.equals(Pose.WAVE_OUT) || pose.equals(Pose.WAVE_IN)) {
+		
+			// Next Exercise
 			
-			if (prevPose != null && !pose.equals(prevPose))
+			if (prevPose != null && !similar_wave(pose,prevPose))
 				next();
-			else if (timestamp - timestampDiff > TIME_DIFF && prevPose != null && pose.equals(prevPose))
+			else if (timestamp - timestampDiff > TIME_DIFF && prevPose != null && similar_wave(pose,prevPose))
 				next();
 		
 			timestampDiff = timestamp;
-			
+		
 		} else if (pose.equals(Pose.FIST)) {
 			nextSet();
 		} else if (pose.equals(Pose.FINGERS_SPREAD)) {
@@ -138,6 +178,7 @@ public class ExerciseManager {
 			case BICEP_CURL: return "Bicep Curl";
 			case BENCH_PRESS: return "Bench Press";
 			case TRICEP_PUSHDOWN: return "Tricep Pushdown";
+			case SIDE_LATERAL_RAISE: return "Side Lateral Raise";
 		}
 		
 		return null;

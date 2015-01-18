@@ -1,11 +1,16 @@
 package com.bran.android;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +23,9 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class WorkoutListActivity extends Activity {
 
+	private ArrayList<String> workoutListNames;
+	private ArrayList<String> workoutIDs;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -25,29 +33,37 @@ public class WorkoutListActivity extends Activity {
 		
 		ListView workoutSeq = (ListView) this.findViewById(R.id.workoutlistview);
 		
-		//TODO: this is a bullshit ass excuse of an arraylist fix it or you will be cursed by the bbeanies
-		ArrayList<String> workoutListNames = new ArrayList<String>();
-		workoutListNames.add("workout scrim");
-		workoutListNames.add("tablet mode experience");
+		// Read From DD
+		DBManager dbmanager_workouts = new DBManager("MyoFit","Workouts",new String[]{"time","id"},new String[]{"VARCHAR(255)","INT(6)"});
+		
+		String sql = "";
+		Cursor c = null;
+		
+		workoutListNames = new ArrayList<String>();
+		workoutIDs = new ArrayList<String>();
+		
+		// Workout Table
+		SQLiteDatabase db = openOrCreateDatabase(dbmanager_workouts.DB_NAME, MODE_PRIVATE, null);
+		sql = "SELECT * FROM "+dbmanager_workouts.TABLE_NAME+";";
+		c = db.rawQuery(sql, null);
+		c.moveToFirst();
+		workoutListNames.add(c.getString(0));
+		workoutIDs.add(c.getString(1));
+		while(c.moveToNext()) {
+			workoutListNames.add(c.getString(0));
+			workoutIDs.add(c.getString(1));
+		}
 		
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1,workoutListNames);
         workoutSeq.setAdapter(adapter);
         
-        for (int i = 0; i < workoutSeq.getAdapter().getCount(); i++)
-			workoutSeq.setItemChecked(i, true);
-		
 		workoutSeq.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				
-				ListView lv = (ListView) parent;
-				
-				if (lv.isItemChecked(position))
-				{
-					  Intent intent = new Intent(WorkoutListActivity.this, ExerciseListActivity.class);
-					  startActivity(intent);
-				}
+				Intent intent = new Intent(WorkoutListActivity.this, ExerciseListActivity.class);
+				intent.putExtra("id", ""+workoutIDs.get(position));
+				startActivity(intent);
 			}	
 		});
 		
@@ -57,8 +73,7 @@ public class WorkoutListActivity extends Activity {
 			@Override
 			public void onClick(View v)
 			{
-			  Intent intent = new Intent(WorkoutListActivity.this, MyoFitActivity.class);
-			  startActivity(intent);
+			  finish();
 			}
 		});
 	}

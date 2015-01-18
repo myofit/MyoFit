@@ -1,6 +1,9 @@
 package com.bran.android;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import com.thalmic.myo.DeviceListener;
 import com.thalmic.myo.Hub;
@@ -11,6 +14,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -197,7 +201,49 @@ public class ExerciseActivity extends Activity implements UIManager {
 
 	@Override
 	public void end() {
+		
+		DBManager dbmanager_workouts = new DBManager("MyoFit","Workouts",new String[]{"time","id"},new String[]{"VARCHAR(255)","INT(6)"});
+		
+		DBManager dbmanager_exercises = new DBManager("MyoFit","Exercises",new String[]{"name","w_id","id"},new String[]{"VARCHAR(255)","INT(6)","INT(6)"});
+		
+		DBManager dbmanager_sets = new DBManager("MyoFit","Sets",new String[]{"set_col","rep","w_id","e_id"},new String[]{"INT(6)","INT(6)","INT(6)","INT(6)"});
+		
+		String sql = "";
+		
+		// Workout Table
+		SQLiteDatabase db = openOrCreateDatabase(dbmanager_workouts.DB_NAME, MODE_PRIVATE, null);
+		//db.execSQL("DROP TABLE IF EXISTS "+dbmanager_workouts.TABLE_NAME+";");
+		sql = "CREATE TABLE IF NOT EXISTS "+dbmanager_workouts.TABLE_NAME+"("+dbmanager_workouts.createColString()+");";
+		db.execSQL(sql);
+		int wtableID = dbmanager_workouts.createID(db,1);
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy - HH:mm");
+		Calendar c = Calendar.getInstance();
+		String currentTime = sdf.format(c.getTime());
+		sql = "INSERT INTO "+dbmanager_workouts.TABLE_NAME+"("+dbmanager_workouts.getColString()+") VALUES ('"+currentTime+"','"+wtableID+"');";
+		db.execSQL(sql);
 
+		// Exercises Table
+		db = openOrCreateDatabase(dbmanager_exercises.DB_NAME, MODE_PRIVATE, null);
+		//db.execSQL("DROP TABLE IF EXISTS "+dbmanager_exercises.TABLE_NAME+";");
+		sql = "CREATE TABLE IF NOT EXISTS "+dbmanager_exercises.TABLE_NAME+"("+dbmanager_exercises.createColString()+");";
+		db.execSQL(sql);
+		for (ExerciseData data : manager.getExerciseData()) {
+			sql = "INSERT INTO "+dbmanager_exercises.TABLE_NAME+"("+dbmanager_exercises.getColString()+") VALUES ('"+data.name+"','"+wtableID+"','"+data.id+"');";
+			db.execSQL(sql);
+		}
+		
+		// Sets Table
+		db = openOrCreateDatabase(dbmanager_sets.DB_NAME, MODE_PRIVATE, null);
+		//db.execSQL("DROP TABLE IF EXISTS "+dbmanager_sets.TABLE_NAME+";");
+		sql = "CREATE TABLE IF NOT EXISTS "+dbmanager_sets.TABLE_NAME+"("+dbmanager_sets.createColString()+");";
+		db.execSQL(sql);
+		for (ExerciseData data : manager.getExerciseData()) {
+			for (int i = 0; i < data.table.size(); i++) {
+				sql = "INSERT INTO "+dbmanager_sets.TABLE_NAME+"("+dbmanager_sets.getColString()+") VALUES ('"+(i+1)+"','"+data.table.get((i+1))+"','"+wtableID+"','"+data.id+"');";
+				db.execSQL(sql);
+			}
+		}
+		
 		Intent intent = new Intent(this,WorkoutCompleteActivity.class);
 		startActivity(intent);
 

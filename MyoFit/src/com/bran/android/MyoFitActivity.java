@@ -24,9 +24,6 @@ public class MyoFitActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		// Set Layout
-		// Layouts are in res/layout
-		//setContentView(R.layout.thelayoutname);
 		setContentView(R.layout.activity_myo_fit);
 		
 		Button startApp = (Button) this.findViewById(R.id.startButton);

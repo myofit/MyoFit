@@ -1,5 +1,7 @@
 package com.bran.android;
 
+import java.util.HashMap;
+
 import com.thalmic.myo.Myo;
 import com.thalmic.myo.Quaternion;
 import com.thalmic.myo.Vector3;
@@ -17,6 +19,9 @@ public class Exercise {
 	
 	private ExerciseType type;
 	
+	private HashMap<Integer,Integer> set_reps;
+	private long time;
+	
 	public Exercise(String name, ExerciseType type) {
 		
 		this.name = name;
@@ -24,6 +29,8 @@ public class Exercise {
 		
 		this.set = 0;
 		this.rep = 0;
+		
+		set_reps = new HashMap<Integer,Integer>();
 		
 	}
 	
@@ -39,7 +46,7 @@ public class Exercise {
 		Log.i("Exercises", "Exercises - nextSet()");
 		if(!started) {
 			set++;
-			rep = 0; // TODO: STORE IN DB FIRST
+			rep = 0;
 			started = true;
 			Log.i("Exercises", "Exercises - nextSet() - setTV: "+set);
 		}
@@ -49,6 +56,7 @@ public class Exercise {
 		Log.i("Exercises", "Exercises - endSet()");
 		if(started) {
 			started = false;
+			set_reps.put(set, rep);
 			Log.i("Exercises", "Exercises - endSet(): started = false");
 		}
 	}
@@ -65,16 +73,24 @@ public class Exercise {
 		return this.form;
 	}
 	
+	public long getTime() {
+		return this.time;
+	}
+	
+	public HashMap<Integer,Integer> getSet_Reps() {
+		return set_reps;
+	}
+	
 	public boolean isStarted() {
 		return started;
 	}
 	
 	public void processData(Myo myo, long timestamp, Vector3 vector, DataType type) {
-		
+		this.time = timestamp;
 	}
 	
 	public void processData(Myo myo, long timestamp, Quaternion quaternion, DataType type) {
-		
+		this.time = timestamp;
 	}
 	
 }

@@ -33,6 +33,7 @@ public class BicepCurl extends Exercise {
 
 	@Override
 	public void processData(Myo myo, long timestamp, Quaternion quaternion, DataType type) {
+		super.processData(myo, timestamp, quaternion, type);
 
 		if (myo.getXDirection().equals(XDirection.TOWARD_ELBOW))
 			direction = -1;
@@ -65,7 +66,8 @@ public class BicepCurl extends Exercise {
 
 	@Override
 	public void processData(Myo myo, long timestamp, Vector3 vector, DataType type) {
-
+		super.processData(myo, timestamp, vector, type);
+		
 		if(type.equals(DataType.GYROSCOPE)) {
 			
 			if (timestamp - formTimeDiff > TIME_DIFF) {

@@ -9,7 +9,8 @@
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="175dp"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:background="#1565C0"
         android:src="@drawable/blueheader" /> 
@@ -32,7 +33,7 @@
         android:layout_alignParentLeft="true"
         android:background="#64B5F6"
         android:layout_marginBottom="0dp"
-        android:text="Save and view workout summary" />
+        android:text="View Workout Summary" />
 
     <ImageView
         android:id="@+id/logoView"
