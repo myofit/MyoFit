@@ -15,7 +15,7 @@ public class BicepCurl extends Exercise {
 	private float downAngle = -10;
 	
 	//TODO: SENSITIVITY SLIDER
-	private float formThreshold = 40;
+	private float formThreshold = 50;
 
 	//TODO: ALLOW MULTIPLE WEARING ORIENTATION
 	private int direction;
@@ -27,6 +27,7 @@ public class BicepCurl extends Exercise {
 		super("Bicep Curl",ExerciseType.BICEP_CURL);
 
 		direction = 1;
+		badForms = 0;
 		form = true;
 
 	}
@@ -52,8 +53,10 @@ public class BicepCurl extends Exercise {
 				if(down && pitch > minAngle) {
 					down = false;
 					rep++;
-					if (!form)
+					if (!form) {
+						badForms++;
 						form = true;
+					}
 					// TODO: MAKE OPTION
 					// myo.vibrate(VibrationType.SHORT);
 				} else if (!down && pitch < downAngle) {

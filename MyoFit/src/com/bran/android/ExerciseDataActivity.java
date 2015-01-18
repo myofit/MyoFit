@@ -51,10 +51,23 @@ public class ExerciseDataActivity extends Activity {
 		sql = "SELECT * FROM Sets WHERE w_id="+workoutID+" and e_id="+exerciseID+";";
 		c = db.rawQuery(sql, null);
 		c.moveToFirst();
-		exerciseSetsAndReps.add("Set "+c.getString(0)+":"+"            "+c.getString(1)+" Reps");
+		
+		int formPercTotal = 0;
+		int numForms = 0;
+		
+		formPercTotal+=Integer.parseInt(c.getString(2));
+		numForms++;
+		
+		exerciseSetsAndReps.add("Set "+c.getString(0)+":"+"            "+c.getString(1)+" Reps"+"            Form: "+c.getString(2)+"%");
+		
 		while(c.moveToNext()) {
-			exerciseSetsAndReps.add("Set "+c.getString(0)+":"+"            "+c.getString(1)+" Reps");
+			formPercTotal+=Integer.parseInt(c.getString(2));
+			numForms++;
+			exerciseSetsAndReps.add("Set "+c.getString(0)+":"+"            "+c.getString(1)+" Reps"+"            Form: "+c.getString(2)+"%");
 		}
+		
+		int formPerc = Math.round(formPercTotal/numForms);
+		tv.setText(exerciseName+" ("+formPerc+"%)");
 		
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1,exerciseSetsAndReps);
 		

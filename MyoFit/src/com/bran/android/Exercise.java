@@ -1,5 +1,6 @@
 package com.bran.android;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.thalmic.myo.Myo;
@@ -15,11 +16,13 @@ public class Exercise {
 	protected boolean form;
 	protected boolean started;
 	
+	protected int badForms;
+	
 	private String name;
 	
 	private ExerciseType type;
 	
-	private HashMap<Integer,Integer> set_reps;
+	private ArrayList<ArrayList<Integer>> set_reps_form;
 	private long time;
 	
 	public Exercise(String name, ExerciseType type) {
@@ -30,7 +33,9 @@ public class Exercise {
 		this.set = 0;
 		this.rep = 0;
 		
-		set_reps = new HashMap<Integer,Integer>();
+		set_reps_form = new ArrayList<ArrayList<Integer>>();
+		
+		badForms = 0;
 		
 	}
 	
@@ -47,6 +52,7 @@ public class Exercise {
 		if(!started) {
 			set++;
 			rep = 0;
+			badForms = 0;
 			started = true;
 			Log.i("Exercises", "Exercises - nextSet() - setTV: "+set);
 		}
@@ -56,7 +62,19 @@ public class Exercise {
 		Log.i("Exercises", "Exercises - endSet()");
 		if(started) {
 			started = false;
-			set_reps.put(set, rep);
+			
+			ArrayList<Integer> data = new ArrayList<Integer>();
+			data.add(set);
+			data.add(rep);
+			
+			int formPerc = 0;
+			
+			if (rep != 0)
+				formPerc = Math.round(100*badForms/rep);
+			
+			data.add(formPerc);
+			
+			set_reps_form.add(data);
 			Log.i("Exercises", "Exercises - endSet(): started = false");
 		}
 	}
@@ -77,8 +95,12 @@ public class Exercise {
 		return this.time;
 	}
 	
-	public HashMap<Integer,Integer> getSet_Reps() {
-		return set_reps;
+	public int getBadForms() {
+		return this.badForms;
+	}
+	
+	public ArrayList<ArrayList<Integer>> getSet_Reps_Form() {
+		return set_reps_form;
 	}
 	
 	public boolean isStarted() {

@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import com.thalmic.myo.Hub;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;

@@ -24,6 +24,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ExerciseActivity extends Activity implements UIManager {
 
@@ -37,6 +38,7 @@ public class ExerciseActivity extends Activity implements UIManager {
 	private TextView setValTV;
 	private TextView repValTV;
 	private TextView formValTV;
+	private TextView fixTV;
 
 	private ArrayList<ExerciseType> workout;
 
@@ -45,6 +47,8 @@ public class ExerciseActivity extends Activity implements UIManager {
 	private ExerciseManager manager;
 	
 	private DeviceListener listener;
+	
+	private static final String[] randomFixes = new String[]{"Straighten Your Arm","Tighten Your Wrist"};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +122,10 @@ public class ExerciseActivity extends Activity implements UIManager {
 		setValTV.setVisibility(View.INVISIBLE);
 		repValTV.setVisibility(View.INVISIBLE);
 		formValTV.setVisibility(View.INVISIBLE);
+		
+		fixTV = (TextView) this.findViewById(R.id.textView1);
+		fixTV.setText("");
+		fixTV.setTextSize(14);
 
 	}
 
@@ -202,8 +210,20 @@ public class ExerciseActivity extends Activity implements UIManager {
 			repTV.setText(""+manager.getRep());
 			if (manager.getForm()) {
 				formTV.setText("Good");
+				fixTV.setText("");
 			} else {
+				
+				String message = "";
+				
+				if (Math.random() > 0.75)
+					message = randomFixes[1];
+				else 
+					message = randomFixes[0];
+				
 				formTV.setText("Bad");
+				
+				fixTV.setText(message);
+			
 			}
 
 		}
@@ -213,17 +233,19 @@ public class ExerciseActivity extends Activity implements UIManager {
 	@Override
 	public void end() {
 		
+		hub.removeListener(listener);
+		
 		DBManager dbmanager_workouts = new DBManager("MyoFit","Workouts",new String[]{"time","id"},new String[]{"VARCHAR(255)","INT(6)"});
 		
 		DBManager dbmanager_exercises = new DBManager("MyoFit","Exercises",new String[]{"name","w_id","id"},new String[]{"VARCHAR(255)","INT(6)","INT(6)"});
 		
-		DBManager dbmanager_sets = new DBManager("MyoFit","Sets",new String[]{"set_col","rep","w_id","e_id"},new String[]{"INT(6)","INT(6)","INT(6)","INT(6)"});
+		DBManager dbmanager_sets = new DBManager("MyoFit","Sets",new String[]{"set_col","rep","form","w_id","e_id"},new String[]{"INT(6)","INT(6)","INT(3)","INT(6)","INT(6)"});
 		
 		String sql = "";
 		
 		// Workout Table
 		SQLiteDatabase db = openOrCreateDatabase(dbmanager_workouts.DB_NAME, MODE_PRIVATE, null);
-		//db.execSQL("DROP TABLE IF EXISTS "+dbmanager_workouts.TABLE_NAME+";");
+		db.execSQL("DROP TABLE IF EXISTS "+dbmanager_workouts.TABLE_NAME+";");
 		sql = "CREATE TABLE IF NOT EXISTS "+dbmanager_workouts.TABLE_NAME+"("+dbmanager_workouts.createColString()+");";
 		db.execSQL(sql);
 		int wtableID = dbmanager_workouts.createID(db,1);
@@ -235,7 +257,7 @@ public class ExerciseActivity extends Activity implements UIManager {
 
 		// Exercises Table
 		db = openOrCreateDatabase(dbmanager_exercises.DB_NAME, MODE_PRIVATE, null);
-		//db.execSQL("DROP TABLE IF EXISTS "+dbmanager_exercises.TABLE_NAME+";");
+		db.execSQL("DROP TABLE IF EXISTS "+dbmanager_exercises.TABLE_NAME+";");
 		sql = "CREATE TABLE IF NOT EXISTS "+dbmanager_exercises.TABLE_NAME+"("+dbmanager_exercises.createColString()+");";
 		db.execSQL(sql);
 		for (ExerciseData data : manager.getExerciseData()) {
@@ -245,12 +267,12 @@ public class ExerciseActivity extends Activity implements UIManager {
 		
 		// Sets Table
 		db = openOrCreateDatabase(dbmanager_sets.DB_NAME, MODE_PRIVATE, null);
-		//db.execSQL("DROP TABLE IF EXISTS "+dbmanager_sets.TABLE_NAME+";");
+		db.execSQL("DROP TABLE IF EXISTS "+dbmanager_sets.TABLE_NAME+";");
 		sql = "CREATE TABLE IF NOT EXISTS "+dbmanager_sets.TABLE_NAME+"("+dbmanager_sets.createColString()+");";
 		db.execSQL(sql);
 		for (ExerciseData data : manager.getExerciseData()) {
 			for (int i = 0; i < data.table.size(); i++) {
-				sql = "INSERT INTO "+dbmanager_sets.TABLE_NAME+"("+dbmanager_sets.getColString()+") VALUES ('"+(i+1)+"','"+data.table.get((i+1))+"','"+wtableID+"','"+data.id+"');";
+				sql = "INSERT INTO "+dbmanager_sets.TABLE_NAME+"("+dbmanager_sets.getColString()+") VALUES ('"+(i+1)+"','"+data.table.get(i).get(1)+"','"+data.table.get(i).get(2)+"','"+wtableID+"','"+data.id+"');";
 				db.execSQL(sql);
 			}
 		}

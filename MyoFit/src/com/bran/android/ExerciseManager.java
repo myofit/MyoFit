@@ -106,7 +106,7 @@ public class ExerciseManager {
 		
 		Exercise exercise = exercises.get(position);
 		
-		ExerciseData data = new ExerciseData(exercise.getName(),exercise.getTime(),exercise.getSet_Reps(),position);
+		ExerciseData data = new ExerciseData(exercise.getName(),exercise.getTime(),exercise.getSet_Reps_Form(),position);
 		
 		exerciseData.add(data);
 		
