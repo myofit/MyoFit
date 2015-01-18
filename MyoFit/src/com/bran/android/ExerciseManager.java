@@ -39,9 +39,9 @@ public class ExerciseManager {
 			switch(types[i]) {
 				case BICEP_CURL: exercises.add(new BicepCurl()); 
 				break;
-				case BENCH_PRESS: exercises.add(new BenchPress());
+				case DUMBBELL_FLY: exercises.add(new DumbbellFly());
 				break;
-				case TRICEP_PUSHDOWN: exercises.add(new TricepPushdown());
+				case TRICEP_KICKBACK: exercises.add(new TricepKickback());
 				break;
 				case SIDE_LATERAL_RAISE: exercises.add(new SideLateralRaise());
 			}
@@ -176,8 +176,8 @@ public class ExerciseManager {
 		
 		switch(type) {
 			case BICEP_CURL: return "Bicep Curl";
-			case BENCH_PRESS: return "Bench Press";
-			case TRICEP_PUSHDOWN: return "Tricep Pushdown";
+			case DUMBBELL_FLY: return "Dumbbell Fly";
+			case TRICEP_KICKBACK: return "Tricep Kickback";
 			case SIDE_LATERAL_RAISE: return "Side Lateral Raise";
 		}
 		

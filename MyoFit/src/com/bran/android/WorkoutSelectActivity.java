@@ -28,42 +28,13 @@ public class WorkoutSelectActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		// Set Layout
-		// Layouts are in res/layout
-		//setContentView(R.layout.thelayoutname);
 		setContentView(R.layout.activity_workout_select);
-		
-		// Use One Activity for each layout
-		// Essentially: HomeActivity, SelectWorkoutActivity, WorkoutActivity etc.
-		
-		// TextView and Button are subclasses of View
-		// Other examples: TextField, ImageView
-		
-		// Get TextView
-		//TextView tv = (TextView) this.findViewById(R.id.theid);
-		// Set Text
-		//tv.setText("Your Text");
-		
-		// Get Button
-		//Button b = (Button) this.findViewById(R.id.theid);
-		// Set Listener
-		/*b.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				
-				// Method For Click
-				
-				// For now just create a comment describing what needs to be done
-				 * Ex. Store in DB, Start Another Activity
-				
-			}
-		});*/
 		
 		exerciseList = new ArrayList<ExerciseType>();
 		exerciseList.add(ExerciseType.BICEP_CURL);
-		exerciseList.add(ExerciseType.BENCH_PRESS);
-		exerciseList.add(ExerciseType.TRICEP_PUSHDOWN);
+		exerciseList.add(ExerciseType.DUMBBELL_FLY);
+		exerciseList.add(ExerciseType.SIDE_LATERAL_RAISE);
+		exerciseList.add(ExerciseType.TRICEP_KICKBACK);
 		ArrayList<String> exerciseListNames = new ArrayList<String>();
 		for (ExerciseType exercise : exerciseList)
 			exerciseListNames.add(ExerciseManager.getName(exercise));

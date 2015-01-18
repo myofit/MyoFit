@@ -21,7 +21,7 @@ public class DumbbellFly extends Exercise {
   private long formTimeDiff;
   private static final int TIME_DIFF = 2000;
 
-  public DumbbellFly {
+  public DumbbellFly() {
     super("Dumbbell Fly",ExerciseType.DUMBBELL_FLY);
 
     direction = 1;

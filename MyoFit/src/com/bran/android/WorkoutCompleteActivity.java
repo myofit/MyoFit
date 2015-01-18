@@ -1,9 +1,13 @@
 package com.bran.android;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 
 public class WorkoutCompleteActivity extends Activity {
 
@@ -13,7 +17,14 @@ public class WorkoutCompleteActivity extends Activity {
 		
 		setContentView(R.layout.activity_workout_complete);
 		
-		
+		Button b = (Button) this.findViewById(R.id.summaryButton);
+		b.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(WorkoutCompleteActivity.this, WorkoutListActivity.class);
+				startActivity(intent);
+			}
+		});
 		
 	}
 
