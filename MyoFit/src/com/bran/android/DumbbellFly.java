@@ -8,11 +8,11 @@ import com.thalmic.myo.Quaternion;
 import com.thalmic.myo.Vector3;
 import com.thalmic.myo.XDirection;
 
-public class TricepKickback extends Exercise {
+public class DumbbellFly extends Exercise {
 
   private boolean down = true;
-  private float minAngle = -15;
-  private float downAngle = -75;
+  private float minAngle = 75;
+  private float downAngle = 10;
 
   private float formThreshold = 40;
 
@@ -21,8 +21,8 @@ public class TricepKickback extends Exercise {
   private long formTimeDiff;
   private static final int TIME_DIFF = 2000;
 
-  public TricepKickback() {
-    super("Tricep Kickback",ExerciseType.TRICEP_KICKBACK);
+  public DumbbellFly {
+    super("Dumbbell Fly",ExerciseType.DUMBBELL_FLY);
 
     direction = 1;
     form = true;
@@ -33,7 +33,7 @@ public class TricepKickback extends Exercise {
     //ADD SUPER THING HERE
 
     if (myo.getXDirection().equals(XDirection.TOWARD_ELBOW))
-      direction = -1;
+    direction = -1;
 
     if(type.equals(DataType.ORIENTATION)) {
 
@@ -50,7 +50,7 @@ public class TricepKickback extends Exercise {
           down = false;
           rep++;
           if (!form)
-            form = true;
+          form = true;
           // TODO: MAKE OPTION
           // myo.vibrate(VibrationType.SHORT);
         } else if (!down && pitch < downAngle) {
@@ -59,5 +59,4 @@ public class TricepKickback extends Exercise {
       }
     }
   }
-
 }
